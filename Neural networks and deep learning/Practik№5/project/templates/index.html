@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Картины визуализации</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+    <script src="https://cdn.plot.ly/plotly-2.27.0.min.js"></script>
+</head>
+<body>
+    <div class="container">
+        <h1>Neural Network Playground</h1>
+        <p class="subtitle">Интерактивная визуализация обучения нейронных сетей</p>
+        
+        <div class="main-layout">
+            <!-- Левая панель управления -->
+            <div class="control-panel">
+                <h2>Параметры датасета</h2>
+                
+                <div class="control-group">
+                    <label for="dataset-type">Тип датасета:</label>
+                    <select id="dataset-type">
+                        <option value="circle">Концентрические круги</option>
+                        <option value="xor">XOR / Кресты</option>
+                        <option value="gaussian">Гауссовские облака</option>
+                        <option value="spiral">Спирали</option>
+                    </select>
+                </div>
+                
+                <div class="control-group">
+                    <label for="noise">Уровень шума: <span id="noise-value">0.1</span></label>
+                    <input type="range" id="noise" min="0" max="0.5" step="0.01" value="0.1">
+                </div>
+                
+                <div class="control-group">
+                    <label for="n-samples">Количество точек: <span id="samples-value">300</span></label>
+                    <input type="range" id="n-samples" min="100" max="500" step="50" value="300">
+                </div>
+                
+                <button id="generate-btn" class="btn btn-primary">Сгенерировать датасет</button>
+                
+                <hr>
+                
+                <h2>Параметры сети</h2>
+                
+                <div class="control-group">
+                    <label for="hidden-size">Нейронов в скрытом слое: <span id="hidden-value">4</span></label>
+                    <input type="range" id="hidden-size" min="1" max="20" step="1" value="4">
+                </div>
+                
+                <div class="control-group">
+                    <label for="learning-rate">Скорость обучения: <span id="lr-value">0.03</span></label>
+                    <input type="range" id="learning-rate" min="0.001" max="1.0" step="0.001" value="0.03">
+                </div>
+                
+                <div class="control-group">
+                    <label for="epochs">Количество эпох: <span id="epochs-value">500</span></label>
+                    <input type="range" id="epochs" min="100" max="2000" step="100" value="500">
+                </div>
+                
+                <button id="train-btn" class="btn btn-success">Обучить сеть</button>
+                <button id="reset-btn" class="btn btn-danger">Сбросить</button>
+                
+                <div id="status" class="status">Ожидание действий...</div>
+            </div>
+            
+            <!-- Правая область визуализации -->
+            <div class="visualization-panel">
+                <div class="viz-row">
+                    <!-- График датасета и границы решений -->
+                    <div class="viz-card">
+                        <h3>Данные и граница решений</h3>
+                        <div id="dataset-plot" class="plot-container"></div>
+                    </div>
+                    
+                    <!-- Карта предсказаний -->
+                    <div class="viz-card">
+                        <h3>Тепловая карта предсказаний</h3>
+                        <div id="heatmap-plot" class="plot-container"></div>
+                    </div>
+                </div>
+                
+                <div class="viz-row">
+                    <!-- Кривая потерь -->
+                    <div class="viz-card">
+                        <h3>Training Loss (Потери при обучении)</h3>
+                        <canvas id="loss-chart"></canvas>
+                    </div>
+                    
+                    <!-- Кривая точности -->
+                    <div class="viz-card">
+                        <h3>Test Accuracy (Точность на тесте)</h3>
+                        <canvas id="accuracy-chart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Легенда и информация -->
+        <div class="info-panel">
+            <h3>Информация об обучении</h3>
+            <div id="training-info">
+                <p>Для начала работы сгенерируйте датасет и нажмите "Обучить сеть".</p>
+                <p>Наблюдайте, как меняется граница решений в процессе обучения!</p>
+            </div>
+        </div>
+    </div>
+    
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+</html>
